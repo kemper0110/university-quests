@@ -25,6 +25,10 @@ void work(char* mat) {
 		mat[iter] = mat[iter + 1] = mat[iter + 2] = aver;
 	}
 }
+inline bool 
+isLess(int a, int b) {
+	return (a - b) >> 31;
+}
 
 int main() {
 
