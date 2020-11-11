@@ -27,8 +27,10 @@ void work(char* mat) {
 }
 
 int main() {
-	//keybd_event(VK_NUMLOCK, 0, 0, 0);
-	while (1) {
+
+
+
+	/*while (1) {
 		bool click = false;
 		for (int i = 0; i < 255; i++)
 			if (GetAsyncKeyState(i) == -32767)
@@ -38,7 +40,7 @@ int main() {
 			Sleep(50);
 			keybd_event(VK_CAPITAL, 0, KEYEVENTF_KEYUP, 0);
 		}
-	}
+	}*/
 
 	//char* mats[4] = { mat1, mat2, mat3, mat4 };
 	//for (int i = 0; i < 4; i++)
