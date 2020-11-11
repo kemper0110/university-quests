@@ -11,18 +11,16 @@
 #include <thread>
 #include <omp.h>
 
-const int size = 5000;
-char* mat1;
-char* mat2;
-char* mat3;
-char* mat4;
+const int size = 1000;
 
 void work(char* mat) {
-	// pixel iterator
-	for (int i = 0; i < size * size; i++) {
-		int iter = i * 3;
-		char aver = (mat[iter] * 0.256 + mat[iter + 1] * 0.563 + mat[iter + 2] * 0.126) / 3;
-		mat[iter] = mat[iter + 1] = mat[iter + 2] = aver;
+	while (1) {
+		// pixel iterator
+		for (int i = 0; i < size * size; i++) {
+			int iter = i * 3;
+			char aver = (mat[iter] * 0.256 + mat[iter + 1] * 0.563 + mat[iter + 2] * 0.126) / 3;
+			mat[iter] = mat[iter + 1] = mat[iter + 2] = aver;
+		}
 	}
 }
 void work_optimized(char* mat) {
@@ -38,8 +36,33 @@ isLess(int a, int b) {
 	return (a - b) >> 31;
 }
 
-int main() {
+void kek(int core) {
+	while (1) {
+		static uint64_t a = 0;
+		a += std::pow(core, core + 1);
+	}
+}
 
+int main() {
+	const int cores = 8;
+	char** mats = new char* [cores];
+	std::thread th[cores];
+
+	const int elem_num = size * size * 3;
+	for (int i = 0; i < cores; i++) {
+		mats[i] = new char[elem_num];
+		for (int j = 0; j < elem_num; j++)
+			mats[i][j] = rand() % 255;
+	}
+
+
+	for (int i = 0; i < cores; i++) 
+		th[i] = std::thread(work, mats[i]);
+
+	for (int i = 0; i < cores; i++)
+		th[i].detach();
+
+	Sleep(10000);
 
 
 	/*while (1) {
