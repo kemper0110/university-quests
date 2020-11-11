@@ -25,6 +25,14 @@ void work(char* mat) {
 		mat[iter] = mat[iter + 1] = mat[iter + 2] = aver;
 	}
 }
+void work_optimized(char* mat) {
+	// pixel iterator
+	for (int i = 0; i < size * size; i++) {
+		int iter = i * 3;
+		char aver = ((mat[iter] >> 2) + (mat[iter + 1] >> 1) + (mat[iter + 2] >> 3) + 255) >> 2;
+		mat[iter] = mat[iter + 1] = mat[iter + 2] = aver;
+	}
+}
 inline bool 
 isLess(int a, int b) {
 	return (a - b) >> 31;
