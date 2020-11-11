@@ -44,6 +44,7 @@ void kek(int core) {
 }
 
 int main() {
+
 	const int cores = 8;
 	char** mats = new char* [cores];
 	std::thread th[cores];
