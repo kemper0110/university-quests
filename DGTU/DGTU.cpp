@@ -63,26 +63,17 @@ int main() {
 
 	auto start = std::chrono::steady_clock::now();
 	// 8 cores
-	// 31 - 37 
 	for (int i = 0; i < cores; i++)
 		th[i] = std::thread(work, mats[i]);
 	for (int i = 0; i < cores; i++)
 		th[i].join();
 
-	// 88
-	
+	/*for (int i = 0; i < cores; i++)
+		work(mats[i]);*/
 
 	auto stop = std::chrono::steady_clock::now();
 	std::cout << "time for 8 cores = " << std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count() << std::endl;
 
-	Sleep(1000);
-	
-	start = std::chrono::steady_clock::now();
-	for (int i = 0; i < cores; i++)
-		work(mats[i]);
-	stop = std::chrono::steady_clock::now();
-
-	std::cout << "time for 1 core = " << std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count() << std::endl;
 	/*while (1) {
 		bool click = false;
 		for (int i = 0; i < 255; i++)
