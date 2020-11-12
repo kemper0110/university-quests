@@ -6,6 +6,8 @@
 #include <list>
 #include <map>
 #include <set>
+#include <stack>
+#include <queue>
 #include <atomic>
 #include <mutex>
 #include <thread>
@@ -14,6 +16,7 @@
 const int size = 10000;
 
 void work(byte* mat) {
+	// one core for 10k = 3250
 	// pixel iterator
 	for (int i = 0; i < size * size; i++) {
 		int iter = i * 3;
@@ -22,6 +25,8 @@ void work(byte* mat) {
 	}
 }
 void work_optimized(byte* mat) {
+	// one core for 10k = 2550
+	// profit = 127%
 	// pixel iterator
 	for (int i = 0; i < size * size; i++) {
 		int iter = i * 3;
@@ -41,8 +46,16 @@ void kek(int core) {
 	}
 }
 
-int main() {
+template <class T>
+void toBinary(T number) {
+	void* x = &number;
+	uint64_t* f = reinterpret_cast<uint64_t*>(x);
+	for (int i = 63; i >= 0; i--)
+		std::cout << ((*f >> i) & 1);
+	std::cout << std::endl;
+}
 
+int main() {
 	const int cores = 8;
 	byte** mats = new byte * [cores];
 	std::thread th[cores];
@@ -63,28 +76,13 @@ int main() {
 
 	auto start = std::chrono::steady_clock::now();
 	// 8 cores
-	for (int i = 0; i < cores; i++)
+	/*for (int i = 0; i < cores; i++)
 		th[i] = std::thread(work, mats[i]);
 	for (int i = 0; i < cores; i++)
-		th[i].join();
+		th[i].join();*/
 
-	/*for (int i = 0; i < cores; i++)
-		work(mats[i]);*/
-
+	for (int i = 0; i < cores; i++)
+		work(mats[i]);
 	auto stop = std::chrono::steady_clock::now();
-	std::cout << "time for 8 cores = " << std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count() << std::endl;
-
-	/*while (1) {
-		bool click = false;
-		for (int i = 0; i < 255; i++)
-			if (GetAsyncKeyState(i) == -32767)
-				click = true;
-		if (click) {
-			keybd_event(VK_CAPITAL, 0, 0, 0);
-			Sleep(50);
-			keybd_event(VK_CAPITAL, 0, KEYEVENTF_KEYUP, 0);
-		}
-	}*/
-
-
+	std::cout << "time = " << std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count() << std::endl;
 }
